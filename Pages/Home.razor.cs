@@ -45,14 +45,45 @@ public partial class Home : ComponentBase
         selectedOyad = newOyad;
         imageUrl = imageService?.GetOyadImage(selectedSura.Number, newOyad.NumberInSurah) ?? "";
         audioUrl = audioService?.GetOyadAudio(newOyad.Number) ?? "";
-        OyadTranslationText = await oyadTranslation!.GetTranslateText(selectedSura.Number, selectedOyad.NumberInSurah);
+        await GetTranslationText();
     }
 
-    public void ShowTranslationText()
+    public async Task GetTranslationText()
+    {
+        try
+        {
+            OyadTranslationText = await oyadTranslation!.GetTranslateText(selectedSura.Number, selectedOyad.NumberInSurah);
+        }
+        catch
+        {
+            OyadTranslationText = "Текстни олишда серверда хатолик, таржимани очириб ёқинг ва яна ҳаракат қилиб коринг.";
+        }
+    }
+
+    public async Task ShowTranslationText()
     {
         isTranslationShow = !isTranslationShow;
-
         Color = isTranslationShow == true ? MudBlazor.Color.Success : MudBlazor.Color.Warning;
-        
+
+        if(isTranslationShow)
+        {
+            try
+            {
+                OyadTranslationText = await oyadTranslation!.GetTranslateText(selectedSura.Number, selectedOyad.NumberInSurah);
+            }
+            catch
+            {
+                OyadTranslationText = "Текстни олишда серверда хатолик, таржимани очириб ёқинг ва яна ҳаракат қилиб коринг.";
+            }
+        }
+    }
+    public async Task SkipToNextAudio()
+    {
+        if(selectedOyad.NumberInSurah < selectedSura.NumberOfAyahs)
+            selectedOyad = oyads.FirstOrDefault(x => x.NumberInSurah == selectedOyad.NumberInSurah + 1)!;
+        else
+            selectedOyad = oyads.FirstOrDefault(x => x.NumberInSurah == 1)!;
+
+        await OnOyadChanged(selectedOyad);
     }
 }
