@@ -63,7 +63,7 @@
     <div style="margin-top: 10px; margin-bottom: 120px;">
         <MudContainer>
             <div style="margin-top: 10px;">
-                <MudText>@OyadTranslationText</MudText>
+                <MudText Style="font-size: 18px;">@OyadTranslationText</MudText>
             </div>
         </MudContainer>
     </div>
@@ -76,6 +76,9 @@
             <MudCardContent>
                 <div style="display: flex; align-items: center;">
                     <audio controls src="@audioUrl" style="flex: 1;"/>
+                    <MudIconButton @onclick="SkipToNextAudio" 
+                                   Icon="@Icons.Material.Filled.SkipNext" 
+                                   Style="color: black; margin-left: 10px;" />
                 </div>
             </MudCardContent>
         }

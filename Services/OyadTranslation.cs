@@ -9,6 +9,6 @@ public class OyadTranslation(HttpClient client)
     {
         var url = $"https://api.alquran.cloud/v1/ayah/{surahNumber}:{oyadNumber}/uz.sodik";
         var Response = await client.GetFromJsonAsync<OyadTranslationTextResponse>(url);
-        return Response?.Data?.Text ?? "Oyadni o'zbek tilidagi tarjimasini olishda muammo";
+        return Response?.Data?.Text!;
     }
 }
